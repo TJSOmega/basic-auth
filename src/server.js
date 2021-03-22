@@ -1,42 +1,31 @@
 'use strict';
 
-// 3rd Party NPM Dependencies
-// new ones -> bcrypt/ base-64/ and the return of Cors
+// 3rd Party Resources
 const express = require('express');
-const bcrypt = require('bcrypt');
-const base64 = require('base-64');
-const cors = require('cors');
-const mongoose = require('mongoose');
+const authRouter = require('./routes/authRoutes');
+const errorHandler = require('./error-handlers/500.js')
+const notFoundHandler = require('./error-handlers/404.js')
 
 
-const app = express()
+// Prepare the express app
+const app = express();
 
-
-// Opens up for anyone to use our App
-app.use(cors());
-
-app.use(express.urlencoded({ extended: true }));
+// Process JSON input and put the data on req.body
 app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 
+console.log(authRouter)
+app.use(authRouter)
+app.use('*', notFoundHandler)
+app.use(errorHandler)
 
-
-
-
-function start(PORT) {
-
-mongoose.connect('mongodb://localhost:27017/basic-auth-server', { useNewUrlParser: true, useUnifiedTopology: true })
-  .then(() => {
-
-    app.listen(PORT, () => {
-      console.log(`Listening on PORT ${PORT}`)
-    })
-
-  })
-  .catch(e => console.error('db error', e.message))
-}
 
 
 module.exports = {
-  server: app,
-  start: start
+  app: app,
+  start: (port) => {
+    app.listen(port, () => {
+      console.log(`listening on port ${port}`)
+    })
+  }
 }
