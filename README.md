@@ -3,7 +3,7 @@
 ## Developer: TJ Simms
 
 ### Links and Resources:
-- Heroku Server : Needs to be added
+- Heroku Server : https://basic-auth-ts.herokuapp.com/ *Unsure how to setup Mongodb Atlas*
 
 - Route Testing: [Swagger.io](https://inspector.swagger.io/builder)
 
